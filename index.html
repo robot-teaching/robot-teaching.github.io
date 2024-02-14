@@ -182,7 +182,7 @@
     <section class="section" style="padding: 0">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
-                <video poster="assets/images/pre.png" id="myVideo" controls muted loop width="100%">
+                <video poster="assets/images/pre.png" id="myVideo" controls loop width="100%">
                     <source src="videos/main_compressed.mp4" type="video/mp4">
                 </video>
             </div>
@@ -246,7 +246,17 @@
             <div class="rows">
                 <div class="rows is-centered ">
                     <div class="row is-full-width">
-                        <h2 class="title is-3"><span class="dvima">TODO: Teaching Demos</span></h2>
+                        <h2 class="title is-3"><span class="dvima">Teaching Demos</span></h2>
+                        <div class="container is-max-desktop">
+                            <div class="columns is-centered has-text-centered">
+                                <video autoplay muted loop width="100%" playsinline onclick="if(!this.hasAttribute('controls')) {this.setAttribute('controls', 'controls');}" id="videoInView">
+                                    <source src="videos/teaching_demo.mp4" type="video/mp4">
+                                  </video>
+                                 
+                            </div>
+                            <p></p>
+                        </div>
+
                         <p style="font-size: 125%">
                             TODO: Explanation
                         </p>
@@ -288,7 +298,26 @@
 </body>
 
 <script>
-
-</script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      let options = {
+        root: null, // using the viewport as the bounding box
+        rootMargin: '0px',
+        threshold: 0.5 // play when 50% of the video is visible
+      };
+  
+      let observer = new IntersectionObserver((entries, observer) => { 
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.play();
+          } else {
+            entry.target.pause();
+          }
+        });
+      }, options);
+  
+      let video = document.getElementById('videoInView');
+      observer.observe(video);
+    });
+  </script>
 
 </html>
