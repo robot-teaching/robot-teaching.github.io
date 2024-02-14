@@ -35,6 +35,14 @@
 
     gtag('config', 'G-HQJ6G7EKRG');
     </script>
+    <style>
+    #myVideo {
+      width: 100%;
+      height: auto;
+      object-fit: cover; /* This will make the video cover the full area of the tag */
+      border-radius: 5px; /* If you want to keep the border-radius */
+    }
+  </style>
 </head>
 
 <body>
@@ -134,7 +142,7 @@
         <div class="container is-max-desktop">
             <!-- Abstract. -->
             <div class="columns is-centered has-text-centered">
-                <video poster="" id="" autoplay controls muted loop width="100%" playbackRate=2.0 style="border-radius: 5px;">
+                <video poster="" id="" autoplay muted loop width="100%" playsinline onclick="if(!this.hasAttribute('controls')) {this.setAttribute('controls', 'controls');}">
                     <source src="videos/teaser.mp4" type="video/mp4">
                 </video>
             </div>
@@ -173,10 +181,9 @@
 
     <section class="section" style="padding: 0">
         <div class="container is-max-desktop">
-            <h2>TODO: Animation from John</h2>
             <div class="columns is-centered has-text-centered">
-                <video poster="" id="" autoplay controls muted loop width="100%" playbackRate=2.0 style="border-radius: 5px;">
-                    <source src="videos/animation.mp4" type="video/mp4">
+                <video poster="assets/images/pre.png" id="myVideo" controls muted loop width="100%">
+                    <source src="videos/main_compressed.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
