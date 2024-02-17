@@ -235,7 +235,11 @@
                     <div class="row is-full-width">
                         <h2 class="title is-3"><span class="dvima">Language Model Predictive Control</span></h2>
                         <p style="font-size: 125%">
-                            TODO: Explanation
+                            Given a dataset of users teaching robots new tasks with language (represented as text inputs and code outputs from
+                            online in-context learning – left), LMPC- Rollouts is trained to predict subsequent inputs and outputs conditioned on
+                            the current chat history (middle), and uses MPC (receding horizon control) for inference-time search to return the next
+                            best action (with fewest expected corrections before success). LMPC-Skip is an alternate variant that is trained to
+                            directly predict the last action (right). Both LMPC variants accelerate fast robot adaptation via in-context learning.
                         </p>
                         <br>
                         <img src="assets/images/lmpc-rollout-vs-skip-v1.png" class="interpolation-image" alt=""
@@ -254,21 +258,47 @@
                     <div class="row is-full-width">
                         <h2 class="title is-3"><span class="dvima">Experiments</span></h2>
                         <p style="font-size: 125%">
-                            TODO: Explanation
+                            Our experiments evaluate how much the various proposed finetuning strategies (slow adaptation) improve online in-context
+                            learning (fast adaptation) for humans interactively teaching robots via natural language feedback. Evaluations are
+                            performed on 78 robot tasks, across 5 robot embodiments in simulation and 2 on real hardware. We specifically explore
+                            the following questions:
+
                         </p>
+
+                        <ul>
+                            <li>How much does fine-tuning improve teachability, especially on test tasks?</li>
+                            <li>How do LMPC-Rollouts and LMPC-Skip compare?</li>
+                            <li>What are the benefits of Top-User Conditioning?</li>
+                            <li>Does finetuning enable cross-embodiment generalization?</li>
+                            <li>Can iterative finetuning further improve teachability?</li>
+                          </ul>
                         <br>
                         <img src="assets/images/main-experiment-plots.png" class="interpolation-image" alt=""
                             style="display: block; margin-left: auto; margin-right: auto" />
                         <br>
                         <p style="font-size: 125%">
-                            TODO: Explanation
+                            Our fine-tuned LLMs with LMPC-Rollouts and LMPC-Skip improve the teachability of the base model (PaLM 2-S), and
+                            outperforms a RAG baseline across all embodiments. LMPC-Skip overfits to train tasks (left), while LMPC-Rollouts
+                            generalizes better (i.e., more teachable and responsive to feedback) on unseen test tasks (right) for multi-turn
+                            sessions (with more than one chat turn).
                         </p>
                         <br>
                         <img src="assets/images/table1.png" class="interpolation-image" alt=""
                             style="display: block; margin-left: auto; margin-right: auto" />
                         <br>
                         <p style="font-size: 125%">
-                            TODO: Explanation
+                            Comparing base and finetuned models across all embodiments. Success: overall success rate on all tasks. Num Chat Turns:
+                            mean number of chat turns for successful chat sessions. Good Rating: proportion of positively rated chat turns after the
+                            turn. Successful Tasks: proportion of tasks with at least one successful chat session. 1 turn Success: the proportion of
+                            chat sessions that were successful with just one chat turn. 2+ turn Success: the proportion of chat sessions that were
+                            successful with two or more chat turns. For both train and test tasks, LMPC-Skip achieves the lowest Num Chat Turns for
+                            successful chat sessions, as well as the highest 1-turn Success Rate. These reflect how LMPC-Skip is trained to predict
+                            the final code as fast as possible. However, LMPC-Rollouts has the highest 2+ turn Success Rate, suggesting it is most
+                            amenable to corrective feedback given an incorrect first response. To maximize performance in practice, these results
+                            suggest that one should use LMPC-Skip for responding to the initial user instruction, then LMPC-Rollouts for responding
+                            to subsequent user feedback. For RAG, while the method improves upon the base model on overall success rate, it achieves
+                            lower Successful Task Rate than the base model on test tasks. This suggests that while RAG may be proficient at
+                            increasing the success rate of tasks similar to the retrieved examples, it struggles to perform well on novel tasks.
                         </p>
                         <br>
                         <img src="assets/images/table3.png" class="interpolation-image" alt=""
@@ -285,7 +315,7 @@
             <div class="rows">
                 <div class="rows is-centered ">
                     <div class="row is-full-width">
-                        <h2 class="title is-3"><span class="dvima">Teaching Demos</span></h2>
+                        <!-- <h2 class="title is-3"><span class="dvima">Teaching Demos</span></h2>
                         <div class="container is-max-desktop">
                             <div class="columns is-centered has-text-centered">
                                 <video autoplay muted loop width="100%" playsinline onclick="if(!this.hasAttribute('controls')) {this.setAttribute('controls', 'controls');}" id="videoInView">
@@ -294,10 +324,14 @@
                                  
                             </div>
                             <p></p>
-                        </div>
+                        </div> -->
 
                         <p style="font-size: 125%">
-                            TODO: Explanation
+                            We evaluate our approach on a subset of tasks for the Mobile Manipulator and the Robot Dog in the real world.
+                            For each task, we ask users to perform four teaching sessions on the real-robot directly. See results that compare PaLM
+                            2-S and LMPC-Rollouts in the table. LMPC-Rollouts achieves higher success rate than PaLM 2-S across all tasks. While Num
+                            Chat Turns for successful sessions is about the same for PaLM 2-S and LMPC-Rollouts on these tasks, LMPC-Rollouts
+                            achieves much higher success rates
                         </p>
                         <br>
                     </div>
@@ -310,15 +344,44 @@
 <section class="section" id="BibTeX">
     <div class="container is-max-widescreen content">
         <h2 class="title">BibTeX</h2>
-        <pre><code>@article{??,
-    title   = {Learning to Learn Faster from Human Feedbackwith Language Model Predictive Control},
-    author  = {??},
-    year    = {2024},
-    journal = {arXiv preprint arXiv: Arxiv-??}
+        <pre><code>@article{liang2023learning,
+title = {Learning to Learn Faster from Human Feedback with Language Model Predictive Control},
+author = {Jacky Liang and Fei Xia and Wenhao Yu and Andy Zeng and Montserrat Gonzalez Arenas and Maria Attarian and
+Maria Bauza and Matthew Bennice and Alex Bewley and Adil Dostmohamed and Chuyuan Kelly Fu and Nimrod Gileadi and Marissa
+Giustina and Keerthana Gopalakrishnan and Leonard Hasenclever and Jan Humplik and Jasmine Hsu and Nikhil Joshi and Ben
+Jyenis and Chase Kew and Sean Kirmani and Tsang-Wei Edward Lee and Kuang-Huei Lee and Assaf Hurwitz Michaely and Joss
+Moore and Ken Oslund and Dushyant Rao and Allen Ren and Baruch Tabanpour and Quan Vuong and Ayzaan Wahid and Ted Xiao
+and Ying Xu and Vincent Zhuang and Peng Xu and Erik Frey and Ken Caluwaerts and Tingnan Zhang and Brian Ichter and
+Jonathan Tompson and Leila Takayama and Vincent Vanhoucke and Izhak Shafran and Maja Mataric and Dorsa Sadigh and
+Nicolas Heess and Kanishka Rao and Nik Stewart and Jie Tan and Carolina Parada},
+year = {2024},
+journal = {arXiv preprint arXiv:Arxiv-??}
 }
 </code></pre>
     </div>
 </section>
+
+
+<section class="section" id="BibTeX">
+    <div class="container is-max-widescreen content">
+        <h2 class="title">Acknowledgments</h2>
+       <p>
+        We thank John Guilyard for his expert animations, and Giles Ruscoe for beautiful renderings. We thank Steven Bohez,
+        Yuval Tassa, Tom Erez, Murilo Martins, Rugile Pevceviciute, David Rendleman, and Connor Schenck for their dedication to
+        ensuring we had strong simulated environments. We thank Travis Armstrong, Noah Brown, Spencer Goodrich, Craig Hickman,
+        Atil Iscen, Jerad Kirkland, Jason Powell, Stefano Saliceti, Ron Sloat, Sergey Yaroshenko, Eddie Yu, Grace Vesom, and
+        Jake Varley for additional robot platform support and robot lab operations. Special thanks to Michael Ahn, Kendra Byrne,
+        Aleksandra Faust, René Wagner, Yuheng Kuang, Yao Lu, Yansong Pang, and Zhuo Xu for supporting this project.
+        We thank all the teachers who volunteered to collect the robot teaching data. We also thank the Google DeepMind
+        Visualization and Human Interaction teams for their help with the development and support of the chat interface. We also
+        want to thank the entire Google DeepMind Robotics team whose tireless efforts can be traced to additional support on
+        this paper. This includes Administrative, Product, Programs, and Strategy teams whose contributions impact all of the
+        team’s successes. We also want to thank our friends in Google DeepMind and Google Research for their guidance,
+        inspirational research, and even direct contributions.
+        </p>
+    </div>
+</section>
+
 
     <footer class="footer">
         <div class="container">
